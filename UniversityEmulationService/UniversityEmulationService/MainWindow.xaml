@@ -1,0 +1,49 @@
+﻿<Window x:Class="UniversityEmulationService.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UniversityEmulationService"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="725">
+    <Grid>
+        <GroupBox Header="Emulation service" Padding="5" Margin="3">
+            <DockPanel>
+                <StackPanel Height="40" DockPanel.Dock="Top" Orientation="Horizontal">
+                    <ComboBox Name="Universities" Padding="20,4" Width="160" Margin="7" ItemsSource="{Binding Path=BindUniversityVariant}" SelectedValue="{Binding BindUniversitySelected}" IsSynchronizedWithCurrentItem="True"/>
+                    <!--ComboBox Name="Months" Padding="20,4" Width="100" Margin="7" ItemsSource="{Binding Path=BindMonthVariant}" SelectedValue="{Binding BindMonthSelected}" IsSynchronizedWithCurrentItem="True"/-->
+                    <TextBox Name="StartYears" Margin="3,0,3,0" Padding="4" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding BindStartYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="50"/>
+                    <TextBox Name="EndYears" Margin="3,0,3,0" Padding="4" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding BindEndYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="50"/>
+                    <Button Padding="20,0" Margin="7" Content="Start" Command="{Binding actionStart}"/>
+                    <Button Padding="20,0" Margin="7" Content="Stop" Command="{Binding actionStop}"/>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Padding="10,5" Text="University name:"/>
+                        <TextBlock Padding="0,5" Text="{Binding BindUniversityName}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Padding="10,5" Text="Current date in server:"/>
+                        <TextBlock Padding="0,5" Text="{Binding BindCurrentDate}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Padding="10,5" Text="Number of students added this month:"/>
+                        <TextBlock Padding="0,5" Text="{Binding BindNumberAddedStudents}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Padding="10,5" Text="Number of students expelt this month:"/>
+                        <TextBlock Padding="0,5" Text="{Binding BindNumberExpeltStudents}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Padding="10,5" Text="The largest number of the incoming:"/>
+                        <TextBlock Padding="0,5" Text="{Binding BindLargestNumberOfIncoming}"/>
+                    </StackPanel>
+                </StackPanel>
+                <DockPanel DockPanel.Dock="Bottom" Height="30" VerticalAlignment="Bottom">
+                    <TextBlock DockPanel.Dock="Right" Padding="10,0" Foreground="#667" VerticalAlignment="Center" TextAlignment="Right" Text="{Binding ServerStatus}"/>
+                    <ProgressBar DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="5" Width="400" Value="{Binding BindProgress, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                </DockPanel>
+            </DockPanel>
+        </GroupBox>
+    </Grid>
+</Window>

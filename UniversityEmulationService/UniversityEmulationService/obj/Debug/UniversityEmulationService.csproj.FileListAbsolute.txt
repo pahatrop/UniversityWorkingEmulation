@@ -1,0 +1,14 @@
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\bin\Debug\UniversityEmulationService.exe.config
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\bin\Debug\UniversityEmulationService.exe
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\bin\Debug\UniversityEmulationService.pdb
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService.csprojResolveAssemblyReference.cache
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\MainWindow.g.cs
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\App.g.cs
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService_MarkupCompile.cache
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService_MarkupCompile.lref
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\MainWindow.baml
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService.g.resources
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService.Properties.Resources.resources
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService.csproj.GenerateResource.Cache
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService.exe
+c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService.pdb
