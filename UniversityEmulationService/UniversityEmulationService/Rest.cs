@@ -39,9 +39,17 @@ namespace UniversityEmulationService
         }
         public async Task GetRequest(Action<ResultJson> action, string req)
         {
-            string result = GetHandler(req);
-            ResultJson mm = Deserialize<ResultJson>(result);
-            action(mm);
+            try
+            {
+                string result = GetHandler(req);
+                ResultJson mm = Deserialize<ResultJson>(result);
+                action(mm);
+            }
+            catch(Exception e)
+            {
+                action(null);
+                throw e;
+            }
         }
         public async Task GetAllUniversities(Action<List<University>> action, string req)
         {
@@ -87,7 +95,6 @@ namespace UniversityEmulationService
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
                 throw ex;
             }
         }

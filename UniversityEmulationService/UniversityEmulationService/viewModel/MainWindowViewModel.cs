@@ -18,6 +18,7 @@ namespace UniversityEmulationService.viewModel
         private List<string> _monthVariant;
         private string _currentUniversityName;
         private string _currentDate;
+        private string _currentDateSTZ;
         private int _numberAddedStudents;
         private int _numberExpeltStudents;
         private int _largestNumberOfIncoming;
@@ -76,6 +77,7 @@ namespace UniversityEmulationService.viewModel
             }
         }
         public string BindCurrentDate { get { return _currentDate; } }
+        public string BindCurrentDateSTZ { get { return _currentDateSTZ; } }
         public int BindNumberAddedStudents { get { return _numberAddedStudents; } }
         public int BindNumberExpeltStudents { get { return _numberExpeltStudents; } }
         public int BindLargestNumberOfIncoming { get { return _largestNumberOfIncoming; } }
@@ -132,6 +134,7 @@ namespace UniversityEmulationService.viewModel
         {
             _currentUniversityName = _currentUniversity.Name;
             int year = _simulationStartYear;
+            bool semaf = true;
             float percent = 100 / (_simulationEndYear-_simulationStartYear);
             float percent2 = percent / 12;
             await Task.Run(() =>
@@ -140,7 +143,16 @@ namespace UniversityEmulationService.viewModel
                 {
                     for (DateTime date = new DateTime(year, 1, 7); date < new DateTime(_simulationEndYear, 1, 6); date = date.AddMonths(1))
                     {
-                        StartEmulation(date);
+                        do
+                        {
+                            semaf = false;
+                            StartEmulation((bool resp) =>
+                            {
+                                semaf = resp;
+                                Console.WriteLine(resp);
+                            }, date);
+                        }
+                        while (semaf) ;
                         System.Threading.Thread.Sleep(2000);
                         if (_isRunning == false) break;
                         _progress += percent2;
@@ -164,28 +176,48 @@ namespace UniversityEmulationService.viewModel
             });
         }
 
-        public async Task StartEmulation(DateTime date)
+        public async Task StartEmulation(Action<bool> action, DateTime date)
         {
             _simulationStart = date;
             _simulationEnd = _simulationStart.AddMonths(1);
-            await Task.Run(() =>
+            try
             {
-                new Rest().GetRequest((ResultJson result) =>
+                await Task.Run(() =>
                 {
-                    _resultJson = result;
-                    _currentDate = result.currentDateDate.ToLocalTime().ToString();
-                    _numberAddedStudents = result.new_students_number;
-                    _numberExpeltStudents = result.expel_students_number;
-                    _largestNumberOfIncoming = result.largest_number_of_incoming;
+                    new Rest().GetRequest((ResultJson result) =>
+                    {
+                        bool ret;
+                        _resultJson = result;
+                        _currentDate = TimeZoneInfo.ConvertTimeToUtc(result.currentDateDate.ToLocalTime()).ToString();
+                        _currentDateSTZ = result.currentDateDate.ToLocalTime().ToString();
+                        _numberAddedStudents = result.new_students_number;
+                        _numberExpeltStudents = result.expel_students_number;
+                        _largestNumberOfIncoming = result.largest_number_of_incoming;
                     //_largestNumberOfEntrants = new DateAndTimeConvert().ConvertationInLocalTimeZone(_currentUniversity.Timezone, result.compain).ToString()+" hours   "+result.largest_number_of_entrants.day+"."+ result.largest_number_of_entrants.month;
-                    RaisePropertyChanged("BindCurrentDate");
-                    RaisePropertyChanged("BindNumberAddedStudents");
-                    RaisePropertyChanged("BindNumberExpeltStudents");
-                    RaisePropertyChanged("BindLargestNumberOfIncoming");
-                    RaisePropertyChanged("BindLargestNumberOfEntrants");
-                },
-                Host+ "/api/emulation?startCompain="+_startEntrance+"&endCompain="+_endEntrance+"&start="+_simulationStart+"&end="+_simulationEnd);
-            });
+                    if (result == null)
+                        {
+                            ret = false;
+                        }
+                        else
+                        {
+                            ret = true;
+                        }
+                        action(ret);
+                        RaisePropertyChanged("BindCurrentDate");
+                        RaisePropertyChanged("BindCurrentDateSTZ");
+                        RaisePropertyChanged("BindNumberAddedStudents");
+                        RaisePropertyChanged("BindNumberExpeltStudents");
+                        RaisePropertyChanged("BindLargestNumberOfIncoming");
+                        RaisePropertyChanged("BindLargestNumberOfEntrants");
+                    },
+                    Host + "/api/emulation?startCompain=" + _startEntrance + "&endCompain=" + _endEntrance + "&start=" + _simulationStart + "&end=" + _simulationEnd);
+                });
+            }
+            catch(Exception e)
+            {
+                action(false);
+                Console.WriteLine("ret false ======= "+e.ToString());
+            }
         }
         
         public ICommand actionStart

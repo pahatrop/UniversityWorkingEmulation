@@ -23,8 +23,10 @@
                         <TextBlock Padding="0,5" Text="{Binding BindUniversityName}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Padding="10,5" Text="Current date in server:"/>
-                        <TextBlock Padding="0,5" Text="{Binding BindCurrentDate}"/>
+                        <TextBlock Padding="10,5" Text="Current date in server timezone:"/>
+                        <TextBlock Padding="5" Text="{Binding BindCurrentDate}"/>
+                        <TextBlock Padding="5" Text="Current date in local time zone:"/>
+                        <TextBlock Padding="5" Text="{Binding BindCurrentDateSTZ}"/> 
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Padding="10,5" Text="Number of students added this month:"/>
