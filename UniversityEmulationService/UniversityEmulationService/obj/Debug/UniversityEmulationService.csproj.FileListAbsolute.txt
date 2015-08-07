@@ -12,3 +12,6 @@ c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationSer
 c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService.csproj.GenerateResource.Cache
 c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService.exe
 c:\users\paveltuhar\documents\visual studio 2015\Projects\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService.pdb
+C:\Users\PavelTuhar\UniversityWorkingEmulation\UniversityEmulationService\UniversityEmulationService\bin\Debug\UniversityEmulationService.exe.config
+C:\Users\PavelTuhar\UniversityWorkingEmulation\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService.exe
+C:\Users\PavelTuhar\UniversityWorkingEmulation\UniversityEmulationService\UniversityEmulationService\obj\Debug\UniversityEmulationService.pdb
