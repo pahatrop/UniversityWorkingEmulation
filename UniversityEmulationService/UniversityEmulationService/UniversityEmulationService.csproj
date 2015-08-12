@@ -60,6 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="CommandHandler.cs" />
     <Compile Include="models\ResultJson.cs" />
+    <Compile Include="models\Timezone.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Rest.cs" />
     <Compile Include="models\University.cs" />

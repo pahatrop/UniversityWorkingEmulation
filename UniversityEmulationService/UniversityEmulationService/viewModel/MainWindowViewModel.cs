@@ -126,16 +126,16 @@ namespace UniversityEmulationService.viewModel
                     RaisePropertyChanged("ServerStatus");
                     RaisePropertyChanged("BindUniversityVariant");
                 },
-                Host+"/api/get?request=University");
+                Host + "/api/get?request=University");
             });
         }
-        
+
         private async Task Emulation()
         {
             _currentUniversityName = _currentUniversity.Name;
             int year = _simulationStartYear;
             bool semaf = true;
-            float percent = 100 / (_simulationEndYear-_simulationStartYear);
+            float percent = 100 / (_simulationEndYear - _simulationStartYear);
             float percent2 = percent / 12;
             await Task.Run(() =>
             {
@@ -152,7 +152,7 @@ namespace UniversityEmulationService.viewModel
                                 Console.WriteLine(resp);
                             }, date);
                         }
-                        while (semaf) ;
+                        while (semaf);
                         System.Threading.Thread.Sleep(2000);
                         if (_isRunning == false) break;
                         _progress += percent2;
@@ -187,14 +187,16 @@ namespace UniversityEmulationService.viewModel
                     new Rest().GetRequest((ResultJson result) =>
                     {
                         bool ret;
+                        Timezone _tz = new Rest().GetTimeZone(Host + "/api/tz?id=" + _currentUniversity.Timezone);
+                        DateTime _tz_university = TimeZoneInfo.ConvertTime(result.currentDateDate, TimeZoneInfo.FindSystemTimeZoneById(_tz.Long_variant));
                         _resultJson = result;
-                        _currentDate = TimeZoneInfo.ConvertTimeToUtc(result.currentDateDate.ToLocalTime()).ToString();
-                        _currentDateSTZ = result.currentDateDate.ToLocalTime().ToString();
+                        _currentDate = _tz_university.ToString();//TimeZoneInfo.ConvertTimeToUtc(result.currentDateDate.ToLocalTime()).ToString();
+                        _currentDateSTZ = result.currentDateDate.ToString();
                         _numberAddedStudents = result.new_students_number;
                         _numberExpeltStudents = result.expel_students_number;
                         _largestNumberOfIncoming = result.largest_number_of_incoming;
-                    //_largestNumberOfEntrants = new DateAndTimeConvert().ConvertationInLocalTimeZone(_currentUniversity.Timezone, result.compain).ToString()+" hours   "+result.largest_number_of_entrants.day+"."+ result.largest_number_of_entrants.month;
-                    if (result == null)
+                        //_largestNumberOfEntrants = new DateAndTimeConvert().ConvertationInLocalTimeZone(_currentUniversity.Timezone, result.compain).ToString()+" hours   "+result.largest_number_of_entrants.day+"."+ result.largest_number_of_entrants.month;
+                        if (result == null)
                         {
                             ret = false;
                         }
@@ -213,13 +215,13 @@ namespace UniversityEmulationService.viewModel
                     Host + "/api/emulation?startCompain=" + _startEntrance + "&endCompain=" + _endEntrance + "&start=" + _simulationStart + "&end=" + _simulationEnd);
                 });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 action(false);
-                Console.WriteLine("ret false ======= "+e.ToString());
+                Console.WriteLine("ret false ======= " + e.ToString());
             }
         }
-        
+
         public ICommand actionStart
         {
             get

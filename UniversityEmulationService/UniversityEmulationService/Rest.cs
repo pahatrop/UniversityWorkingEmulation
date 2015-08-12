@@ -45,11 +45,18 @@ namespace UniversityEmulationService
                 ResultJson mm = Deserialize<ResultJson>(result);
                 action(mm);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 action(null);
                 throw e;
             }
+        }
+        public Timezone GetTimeZone(string req)
+        {
+            string result = GetHandler(req);
+            List<Timezone> mm = Deserialize<List<Timezone>>(result);
+            Timezone dt = mm[0];
+            return dt;
         }
         public async Task GetAllUniversities(Action<List<University>> action, string req)
         {
