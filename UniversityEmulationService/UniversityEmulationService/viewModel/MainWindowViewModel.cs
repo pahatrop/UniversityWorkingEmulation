@@ -7,6 +7,7 @@ using UniversityEmulationService.models;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using NodaTime;
 
 namespace UniversityEmulationService.viewModel
 {
@@ -175,20 +176,18 @@ namespace UniversityEmulationService.viewModel
                 RaisePropertyChanged("BindProgress");
             });
         }
-
-        public DateTime ConvertFromUtc(DateTime sourceDateTime, string targetZoneInfo)
+        
+        public static DateTime UtcTimeToVenueTimeNodaTime(DateTime dateTimeUtc, string timeZoneId)
         {
-            /*return sourceDateTime.Kind == DateTimeKind.Local
-                ? TimeZoneInfo.ConvertTime(sourceDateTime, TimeZoneInfo.Utc, targetZoneInfo)
-                : TimeZoneInfo.ConvertTime(new DateTime(sourceDateTime.Ticks, DateTimeKind.Local), targetZoneInfo);*/
-            DateTime tmp = new DateTime(sourceDateTime.Ticks,DateTimeKind.Utc);
-            return TimeZoneInfo.ConvertTimeBySystemTimeZoneId(tmp, targetZoneInfo);
-
+            DateTimeZone dateTimeZone = DateTimeZoneProviders.Tzdb[timeZoneId];
+            return dateTimeUtc.Kind == DateTimeKind.Utc
+                ? Instant.FromDateTimeUtc(dateTimeUtc).InZone(dateTimeZone).ToDateTimeUnspecified()
+                : Instant.FromDateTimeUtc(new DateTime(dateTimeUtc.Ticks, DateTimeKind.Utc)).InZone(dateTimeZone).ToDateTimeUnspecified();
         }
 
         public async Task StartEmulation(Action<bool> action, DateTime date)
         {
-            DateTime timeUtc = DateTime.UtcNow;
+            //DateTime timeUtc = DateTime.UtcNow;
             _simulationStart = date;
             _simulationEnd = _simulationStart.AddMonths(1);
             try
@@ -198,22 +197,19 @@ namespace UniversityEmulationService.viewModel
                     new Rest().GetRequest((ResultJson result) =>
                     {
                         bool ret;
+                        _resultJson = result;
 
                         Timezone _tz = new Rest().GetTimeZone(Host + "/api/tz?id=" + _currentUniversity.Timezone); // info about timezone
                         
-                        DateTime _tz_university = ConvertFromUtc(result.currentDateDate, _tz.Long_variant);
-                        DateTime _now = ConvertFromUtc(result.currentDateDate, TimeZoneInfo.Local.Id);
+                        DateTime _tz_university = UtcTimeToVenueTimeNodaTime(result.currentDateDate, _tz.Tz);
+                        DateTime _now = UtcTimeToVenueTimeNodaTime(result.currentDateDate, DateTimeZoneProviders.Tzdb.GetSystemDefault().ToString());
+
+                        _currentDate = _tz_university.ToString("dd-MM-yyyy HH:mm"); // to university time zone 
+                        _currentDateSTZ = _now.ToString("dd-MM-yyyy HH:mm"); // to local time zone
                         
-                        _resultJson = result;
-                        _currentDate = _tz_university.ToString("dd-MM-yyyy HH:mm"); // to local time zone
-                        _currentDateSTZ = _now.ToString("dd-MM-yyyy HH:mm"); // to university time zone
-
-                        //Console.WriteLine(TimeZoneInfo.ConvertTimeFromUtc(new DateTime(result.currentDateDate.Ticks, DateTimeKind.Utc), TimeZoneInfo.Local));
-
                         _numberAddedStudents = result.new_students_number;
                         _numberExpeltStudents = result.expel_students_number;
                         _largestNumberOfIncoming = result.largest_number_of_incoming;
-                        //_largestNumberOfEntrants = new DateAndTimeConvert().ConvertationInLocalTimeZone(_currentUniversity.Timezone, result.compain).ToString()+" hours   "+result.largest_number_of_entrants.day+"."+ result.largest_number_of_entrants.month;
                         
                         if (result == null)
                         {
